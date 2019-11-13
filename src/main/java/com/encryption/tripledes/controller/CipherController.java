@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.encryption.tripledes.dto.RequestDTO;
 import com.encryption.tripledes.dto.SubscriberDTO;
 import com.encryption.tripledes.exception.CustomCheckException;
 import com.encryption.tripledes.service.TripleDesEncryption;
 
 @RestController
 @RequestMapping("/encryption")
-public class EncryptionController {
+public class CipherController {
 	
 	@Autowired
 	private TripleDesEncryption tripleDes;
@@ -25,17 +26,17 @@ public class EncryptionController {
 	}
 	
 	@PostMapping("/soften")
-	public SubscriberDTO decryptObject (@RequestBody @Valid String encrypted) throws CustomCheckException {
-		return tripleDes.decryptObject(encrypted);
+	public SubscriberDTO decryptObject (@RequestBody @Valid RequestDTO encrypted) throws CustomCheckException {
+		return tripleDes.decryptObject(encrypted.getData());
 	}
 	
 	@PostMapping("/harden/value")
-	public String encryptValue (@RequestBody @Valid String key) throws CustomCheckException {
-		return tripleDes.encrypt(key);
+	public String encryptValue (@RequestBody @Valid RequestDTO key) throws CustomCheckException {
+		return tripleDes.encrypt(key.getData());
 	}
 	
 	@PostMapping("/soften/value")
-	public String decryptValue (@RequestBody @Valid String encrypted) throws CustomCheckException {
-		return tripleDes.decrypt(encrypted);
+	public String decryptValue (@RequestBody @Valid RequestDTO encrypted) throws CustomCheckException {
+		return tripleDes.decrypt(encrypted.getData());
 	}
 }

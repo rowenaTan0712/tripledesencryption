@@ -20,49 +20,39 @@ import com.google.gson.Gson;
 public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	
 	@Value("${des.key}")
-	private String key;
-
-	@Override
-	public String encrypt (SubscriberDTO subscriber) throws CustomCheckException {
-		try {
-			MessageDigest md = MessageDigest.getInstance("md5");
-	        byte[] mdKey = md.digest(key.getBytes("utf-8"));
-	        byte[] keyBytes = Arrays.copyOf(mdKey, 24);
-	        for (int j = 0, k = 16; j < 8;) {
-	            keyBytes[k++] = keyBytes[j++];
-	        }
-
-	        SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-	        IvParameterSpec iv = new IvParameterSpec(new byte[8]);
-	        Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
-	        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-
-	        byte[] subsByte = subscriber.toString().getBytes("utf-8");
-	        byte[] cipherText = cipher.doFinal(subsByte);
-	        return  Base64.getEncoder().encodeToString(cipherText);
-		}catch(Exception e) {
-			throw new CustomCheckException("Encryption of Object error.", e);
-		}
+	private String secretKey;
+	
+	private MessageDigest md;
+    private byte[] mdKey;
+    private byte[] keyBytes;
+    private SecretKey key;
+    private IvParameterSpec iv;
+    private Cipher cipher;
+    
+    private static final String BYTE_FORMAT = "utf-8";
+	
+	public void initiateValues () throws Exception{
+		 md = MessageDigest.getInstance("md5");
+		 mdKey = md.digest(secretKey.getBytes("utf-8"));
+		 keyBytes = Arrays.copyOf(mdKey, 24);
+		 for (int j = 0, k = 16; j < 8;) {
+            keyBytes[k++] = keyBytes[j++];
+		 }
+		 
+		 key = new SecretKeySpec(keyBytes, "DESede");
+		 iv = new IvParameterSpec(new byte[8]);
+		 cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
 	}
-
+	
 	@Override
 	public String encrypt(String data) throws CustomCheckException {
 		try {
-			MessageDigest md = MessageDigest.getInstance("md5");
-	        byte[] mdKey = md.digest(key.getBytes("utf-8"));
-	        byte[] keyBytes = Arrays.copyOf(mdKey, 24);
-	        for (int j = 0, k = 16; j < 8;) {
-	            keyBytes[k++] = keyBytes[j++];
-	        }
-
-	        SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-	        IvParameterSpec iv = new IvParameterSpec(new byte[8]);
-	        Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+			initiateValues();
 	        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-
-	        byte[] subsByte = data.getBytes("utf-8");
-	        byte[] cipherText = cipher.doFinal(subsByte);
-	        return new String (cipherText, "UTF-8");
+	        byte[] dataInBytes = data.getBytes(BYTE_FORMAT);
+	        
+	        byte[] cipherText = cipher.doFinal(dataInBytes);
+	        return Base64.getEncoder().encodeToString(cipherText);
 		}catch(Exception e) {
 			throw new CustomCheckException("Encryption of String error.", e);
 		}
@@ -71,56 +61,47 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	@Override
 	public String decrypt (String encrypted) throws CustomCheckException{
 		try {
-			if(encrypted == null){
-	            return "";
-	        }
-			
-			MessageDigest md = MessageDigest.getInstance("md5");
-	        byte[] mdKey = md.digest(key.getBytes("utf-8"));
-	        byte[] keyBytes = Arrays.copyOf(mdKey, 24);
-	        for (int j = 0, k = 16; j < 8;) {
-	            keyBytes[k++] = keyBytes[j++];
-	        }
-
-	        SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-	        IvParameterSpec iv = new IvParameterSpec(new byte[8]);
-	        Cipher decipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
-	        decipher.init(Cipher.DECRYPT_MODE, key, iv);
-
-	        byte[] byteText = decipher.doFinal(encrypted.getBytes());
-
-	        return new String(byteText, "UTF-8");
+			initiateValues();
+	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
+	        
+	        byte[] encData = Base64.getDecoder().decode(encrypted);
+	        byte[] byteText = cipher.doFinal(encData);
+	        return new String(byteText, BYTE_FORMAT);
 		}catch(Exception e) {
 			throw new CustomCheckException("Error on decrypting of string.", e);
 		}
 	}
 	
 	@Override
+	public String encrypt (SubscriberDTO subscriber) throws CustomCheckException {
+		try {
+			initiateValues();
+	        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+	        
+	        subscriber.setKey(secretKey);
+	        byte[] subsBytes = subscriber.toString().getBytes("utf-8");
+	        
+	        byte[] cipherText = cipher.doFinal(subsBytes);
+	        return Base64.getEncoder().encodeToString(cipherText);
+		}catch(Exception e) {
+			throw new CustomCheckException("Encryption of Object error.", e);
+		}
+	}
+
+	@Override
 	public SubscriberDTO decryptObject (String encrypted) throws CustomCheckException {
 		try {
-			if(encrypted == null){
-	            return null;
-	        }
-			MessageDigest md = MessageDigest.getInstance("md5");
-	        byte[] mdKey = md.digest(key.getBytes("utf-8"));
-	        byte[] keyBytes = Arrays.copyOf(mdKey, 24);
-	        for (int j = 0, k = 16; j < 8;) {
-	            keyBytes[k++] = keyBytes[j++];
-	        }
+			initiateValues();
+	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
+	        
+	        byte[] encData = Base64.getDecoder().decode(encrypted);
+	        byte[] byteText = cipher.doFinal(encData);
 
-	        SecretKey key = new SecretKeySpec(keyBytes, "DESede");
-	        IvParameterSpec iv = new IvParameterSpec(new byte[8]);
-	        Cipher decipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
-	        decipher.init(Cipher.DECRYPT_MODE, key, iv);
-
-	        byte[] byteText = decipher.doFinal(encrypted.getBytes("UTF-8"));
-
-	        String json = Base64.getEncoder().encodeToString(byteText);
+	        String json = new String(byteText, BYTE_FORMAT);
 	        Gson gson = new Gson();
 	        return gson.fromJson(json, SubscriberDTO.class);
 		}catch(Exception e) {
 			throw new CustomCheckException("Error on decrypting of object.", e);
 		}
 	}
-
 }
