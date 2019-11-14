@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "245c9b37-ef28-4690-acb8-8023ca32e7e1",
+		"name": "tripledes-project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "harden-object",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Header",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"acctNo\" : \"0912312312\",\n\t\"externalTag\" : \"tag-12334234\",\n\t\"amount\" : 2000.00,\n\t\"telco\" : \"globe\",\n\t\"clientTraceNo\" : \"2242342342342\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/encryption/harden",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"encryption",
+						"harden"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "soften-object",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Header",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"data\" : \"6nlPo+/M4zJ5bMaAZQcR9GV4iemL7W/RMgusa18xyyjFwKNb02OWeD/N/Ze8w/eYWndV1wnLnCJ3g+uVrqHBpjJp9liRdZZ4a4QM6YlGWMtRkP9IuVJHkqKms6N1xNGKs+9Dtte+AWKA+mUs3wGQfCGOxYGAdaSuclI9vf33BaA=\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/encryption/soften",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"encryption",
+						"soften"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "harden-string",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Header",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"data\" : \"34234234234234easfsff qweqweqweqweqweqweqweqwe\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/encryption/harden/value",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"encryption",
+						"harden",
+						"value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "soften-string",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Header",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"data\" : \"8ucVW9+Mf59OlGbDoco0Mw0wOMI1L1z0RW1fxxrAd1SjUp4naJVEzoC4JH9S//Te\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/encryption/soften/value",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"encryption",
+						"soften",
+						"value"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

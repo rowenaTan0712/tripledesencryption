@@ -1,8 +1,9 @@
-package com.encryption.tripledes.service;
+package com.encryption.tripledes.services;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.UUID;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -10,10 +11,15 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.encryption.tripledes.dto.SubscriberDTO;
-import com.encryption.tripledes.exception.CustomCheckException;
+import com.encryption.tripledes.dto.requests.AccountRequestDTO;
+import com.encryption.tripledes.dto.responses.AccountResponseDTO;
+import com.encryption.tripledes.dto.responses.CommonResponseDTO;
+import com.encryption.tripledes.exceptions.CustomCheckException;
+import com.encryption.tripledes.utils.APIStatus;
 import com.google.gson.Gson;
 
 @Service
@@ -45,51 +51,57 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	}
 	
 	@Override
-	public String encrypt(String data) throws CustomCheckException {
+	public ResponseEntity<CommonResponseDTO> encrypt(String data) throws CustomCheckException {
 		try {
 			initiateValues();
 	        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 	        byte[] dataInBytes = data.getBytes(BYTE_FORMAT);
 	        
 	        byte[] cipherText = cipher.doFinal(dataInBytes);
-	        return Base64.getEncoder().encodeToString(cipherText);
+	        CommonResponseDTO response = new CommonResponseDTO(Base64.getEncoder().encodeToString(cipherText), 
+	        					APIStatus.SUCCESS, UUID.randomUUID().toString());
+	        return new ResponseEntity<>(response, HttpStatus.OK);
 		}catch(Exception e) {
 			throw new CustomCheckException("Encryption of String error.", e);
 		}
 	}
 
 	@Override
-	public String decrypt (String encrypted) throws CustomCheckException{
+	public ResponseEntity<CommonResponseDTO> decrypt (String encrypted) throws CustomCheckException{
 		try {
 			initiateValues();
 	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
 	        
 	        byte[] encData = Base64.getDecoder().decode(encrypted);
 	        byte[] byteText = cipher.doFinal(encData);
-	        return new String(byteText, BYTE_FORMAT);
+	        CommonResponseDTO response = new CommonResponseDTO(new String(byteText, BYTE_FORMAT),
+	        		APIStatus.SUCCESS, UUID.randomUUID().toString());
+	        return new ResponseEntity<>(response, HttpStatus.OK);
 		}catch(Exception e) {
 			throw new CustomCheckException("Error on decrypting of string.", e);
 		}
 	}
 	
 	@Override
-	public String encrypt (SubscriberDTO subscriber) throws CustomCheckException {
+	public ResponseEntity<CommonResponseDTO> encrypt (AccountRequestDTO account) throws CustomCheckException {
 		try {
 			initiateValues();
 	        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 	        
-	        subscriber.setKey(secretKey);
-	        byte[] subsBytes = subscriber.toString().getBytes("utf-8");
+	        account.setKey(secretKey);
+	        byte[] subsBytes = account.toString().getBytes("utf-8");
 	        
 	        byte[] cipherText = cipher.doFinal(subsBytes);
-	        return Base64.getEncoder().encodeToString(cipherText);
+	        CommonResponseDTO response = new CommonResponseDTO(Base64.getEncoder().encodeToString(cipherText),
+	        		APIStatus.SUCCESS, UUID.randomUUID().toString());
+	        return new ResponseEntity<>(response, HttpStatus.OK);
 		}catch(Exception e) {
 			throw new CustomCheckException("Encryption of Object error.", e);
 		}
 	}
 
 	@Override
-	public SubscriberDTO decryptObject (String encrypted) throws CustomCheckException {
+	public ResponseEntity<AccountResponseDTO> decryptObject (String encrypted) throws CustomCheckException {
 		try {
 			initiateValues();
 	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
@@ -99,7 +111,10 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 
 	        String json = new String(byteText, BYTE_FORMAT);
 	        Gson gson = new Gson();
-	        return gson.fromJson(json, SubscriberDTO.class);
+	        AccountResponseDTO dto = gson.fromJson(json, AccountResponseDTO.class);
+	        dto.setMessage(APIStatus.SUCCESS);
+	        dto.setTraceId(UUID.randomUUID().toString());
+	        return new ResponseEntity<>(dto, HttpStatus.OK);
 		}catch(Exception e) {
 			throw new CustomCheckException("Error on decrypting of object.", e);
 		}
