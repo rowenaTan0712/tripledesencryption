@@ -10,6 +10,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,7 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
     private Cipher cipher;
     
     private static final String BYTE_FORMAT = "utf-8";
+    private static final Logger logger = LogManager.getLogger(TripleDesEncryptionImpl.class.getName());
 	
 	public void initiateValues () throws Exception{
 		 md = MessageDigest.getInstance("md5");
@@ -53,6 +56,7 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	@Override
 	public ResponseEntity<CommonResponseDTO> encrypt(String data) throws CustomCheckException {
 		try {
+			logger.info("Request {}", data);
 			initiateValues();
 	        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 	        byte[] dataInBytes = data.getBytes(BYTE_FORMAT);
@@ -60,8 +64,10 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	        byte[] cipherText = cipher.doFinal(dataInBytes);
 	        CommonResponseDTO response = new CommonResponseDTO(Base64.getEncoder().encodeToString(cipherText), 
 	        					APIStatus.SUCCESS, UUID.randomUUID().toString());
+	        logger.info("Response {}", response.getResponseData());
 	        return new ResponseEntity<>(response, HttpStatus.OK);
 		}catch(Exception e) {
+			logger.error("Error {}", e.getMessage());
 			throw new CustomCheckException("Encryption of String error.", e);
 		}
 	}
@@ -69,6 +75,7 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	@Override
 	public ResponseEntity<CommonResponseDTO> decrypt (String encrypted) throws CustomCheckException{
 		try {
+			logger.info("Request {}", encrypted);
 			initiateValues();
 	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
 	        
@@ -76,8 +83,10 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	        byte[] byteText = cipher.doFinal(encData);
 	        CommonResponseDTO response = new CommonResponseDTO(new String(byteText, BYTE_FORMAT),
 	        		APIStatus.SUCCESS, UUID.randomUUID().toString());
+	        logger.info("Response {}", response.getResponseData());
 	        return new ResponseEntity<>(response, HttpStatus.OK);
 		}catch(Exception e) {
+			logger.error("Error {}", e.getMessage());
 			throw new CustomCheckException("Error on decrypting of string.", e);
 		}
 	}
@@ -85,6 +94,7 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	@Override
 	public ResponseEntity<CommonResponseDTO> encrypt (AccountRequestDTO account) throws CustomCheckException {
 		try {
+			logger.info("Request {}", account.toString());
 			initiateValues();
 	        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 	        
@@ -94,8 +104,10 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	        byte[] cipherText = cipher.doFinal(subsBytes);
 	        CommonResponseDTO response = new CommonResponseDTO(Base64.getEncoder().encodeToString(cipherText),
 	        		APIStatus.SUCCESS, UUID.randomUUID().toString());
+	        logger.info("Response {}", response.getResponseData());
 	        return new ResponseEntity<>(response, HttpStatus.OK);
 		}catch(Exception e) {
+			logger.error("Error {}", e.getMessage());
 			throw new CustomCheckException("Encryption of Object error.", e);
 		}
 	}
@@ -103,6 +115,7 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	@Override
 	public ResponseEntity<AccountResponseDTO> decryptObject (String encrypted) throws CustomCheckException {
 		try {
+			logger.info("Request {}", encrypted);
 			initiateValues();
 	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
 	        
@@ -114,8 +127,10 @@ public class TripleDesEncryptionImpl implements TripleDesEncryption{
 	        AccountResponseDTO dto = gson.fromJson(json, AccountResponseDTO.class);
 	        dto.setMessage(APIStatus.SUCCESS);
 	        dto.setTraceId(UUID.randomUUID().toString());
+	        logger.info("Response {}", dto.toString());
 	        return new ResponseEntity<>(dto, HttpStatus.OK);
 		}catch(Exception e) {
+			logger.error("Error {}", e.getMessage());
 			throw new CustomCheckException("Error on decrypting of object.", e);
 		}
 	}

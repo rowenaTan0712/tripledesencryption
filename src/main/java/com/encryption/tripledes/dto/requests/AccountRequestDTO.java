@@ -2,10 +2,6 @@ package com.encryption.tripledes.dto.requests;
 
 import java.io.Serializable;
 
-import com.encryption.tripledes.utils.APIStatus;
-import com.encryption.tripledes.utils.StatusResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 
