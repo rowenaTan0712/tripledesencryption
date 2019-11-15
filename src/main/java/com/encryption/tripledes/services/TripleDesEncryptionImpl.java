@@ -25,7 +25,7 @@ import com.encryption.tripledes.utils.APIStatus;
 import com.google.gson.Gson;
 
 @Service
-public class TripleDesEncryptionImpl implements TripleDesEncryption{
+public class TripleDesEncryptionImpl implements TripleDesEncryptionService{
 	
 	@Value("${des.key}")
 	private String secretKey;

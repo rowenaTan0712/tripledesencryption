@@ -15,15 +15,15 @@ import com.encryption.tripledes.dto.requests.CommonRequestDTO;
 import com.encryption.tripledes.dto.responses.AccountResponseDTO;
 import com.encryption.tripledes.dto.responses.CommonResponseDTO;
 import com.encryption.tripledes.exceptions.CustomCheckException;
-import com.encryption.tripledes.services.TripleDesEncryption;
-import com.encryption.tripledes.utils.Utility;
+import com.encryption.tripledes.services.TripleDesEncryptionService;
+import com.encryption.tripledes.utils.UtilityService;
 
 @RestController
 @RequestMapping("/encryption")
-public class CipherController extends Utility {
+public class CipherController extends UtilityService {
 	
 	@Autowired
-	private TripleDesEncryption tripleDes;
+	private TripleDesEncryptionService tripleDes;
 	
 	@PostMapping("/harden")
 	public ResponseEntity<CommonResponseDTO> encryptObject ( @RequestHeader(name="X-Header", required = true) String header,
