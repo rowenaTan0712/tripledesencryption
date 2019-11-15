@@ -16,6 +16,4 @@ public interface TripleDesEncryptionService {
 	public ResponseEntity<CommonResponseDTO> encrypt(String data) throws CustomCheckException;
 	
 	public ResponseEntity<CommonResponseDTO> decrypt (String encrypted) throws CustomCheckException;
-	
-	
 }
