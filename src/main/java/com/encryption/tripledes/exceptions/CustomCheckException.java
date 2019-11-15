@@ -1,4 +1,4 @@
-package com.encryption.tripledes.exception;
+package com.encryption.tripledes.exceptions;
 
 public class CustomCheckException extends Exception{
 
@@ -9,6 +9,10 @@ public class CustomCheckException extends Exception{
 	
 	public CustomCheckException(String errorMessage, Throwable e) {
 		super(errorMessage, e);
+	}
+	
+	public CustomCheckException(String errorMessage) {
+		super(errorMessage);
 	}
 
 }

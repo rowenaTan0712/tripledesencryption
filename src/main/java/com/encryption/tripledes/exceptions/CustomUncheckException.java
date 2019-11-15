@@ -1,4 +1,4 @@
-package com.encryption.tripledes.exception;
+package com.encryption.tripledes.exceptions;
 
 public class CustomUncheckException extends RuntimeException{
 
