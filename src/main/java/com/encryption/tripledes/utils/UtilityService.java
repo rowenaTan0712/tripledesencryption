@@ -5,9 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.encryption.tripledes.exceptions.CustomCheckException;
 
-public class Utility {
+public class UtilityService {
 	
-	private Logger logger = LogManager.getLogger(Utility.class);
+	private Logger logger = LogManager.getLogger(UtilityService.class);
 	
 	public void verifyHeader(String header) throws CustomCheckException {
 		if(header.equals("")) {
