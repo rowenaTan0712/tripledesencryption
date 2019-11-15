@@ -71,25 +71,6 @@ public class TripleDesEncryptionImpl implements TripleDesEncryptionService{
 			throw new CustomCheckException("Encryption of String error.", e);
 		}
 	}
-
-	@Override
-	public ResponseEntity<CommonResponseDTO> decrypt (String encrypted) throws CustomCheckException{
-		try {
-			logger.info("Request {}", encrypted);
-			initiateValues();
-	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
-	        
-	        byte[] encData = Base64.getDecoder().decode(encrypted);
-	        byte[] byteText = cipher.doFinal(encData);
-	        CommonResponseDTO response = new CommonResponseDTO(new String(byteText, BYTE_FORMAT),
-	        		APIStatus.SUCCESS, UUID.randomUUID().toString());
-	        logger.info("Response {}", response.getResponseData());
-	        return new ResponseEntity<>(response, HttpStatus.OK);
-		}catch(Exception e) {
-			logger.error("Error {}", e.getMessage());
-			throw new CustomCheckException("Error on decrypting of string.", e);
-		}
-	}
 	
 	@Override
 	public ResponseEntity<CommonResponseDTO> encrypt (AccountRequestDTO account) throws CustomCheckException {
@@ -112,6 +93,25 @@ public class TripleDesEncryptionImpl implements TripleDesEncryptionService{
 		}
 	}
 
+	@Override
+	public ResponseEntity<CommonResponseDTO> decrypt (String encrypted) throws CustomCheckException{
+		try {
+			logger.info("Request {}", encrypted);
+			initiateValues();
+	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
+	        
+	        byte[] encData = Base64.getDecoder().decode(encrypted);
+	        byte[] byteText = cipher.doFinal(encData);
+	        CommonResponseDTO response = new CommonResponseDTO(new String(byteText, BYTE_FORMAT),
+	        		APIStatus.SUCCESS, UUID.randomUUID().toString());
+	        logger.info("Response {}", response.getResponseData());
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+		}catch(Exception e) {
+			logger.error("Error {}", e.getMessage());
+			throw new CustomCheckException("Error on decrypting of string.", e);
+		}
+	}
+	
 	@Override
 	public ResponseEntity<AccountResponseDTO> decryptObject (String encrypted) throws CustomCheckException {
 		try {

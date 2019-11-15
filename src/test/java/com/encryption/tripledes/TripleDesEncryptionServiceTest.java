@@ -35,29 +35,19 @@ public class TripleDesEncryptionServiceTest {
 	}
 	
 	@Test
-	public void testCipherObject () {
-		try {
-			AccountRequestDTO request = accountRequestObject();
-			ReflectionTestUtils.setField(tripleDesEncryptService, "secretKey", "Password123");
-			ResponseEntity<CommonResponseDTO> response = tripleDesEncryptService.encrypt(request);
-			String encrypted = response.getBody().getResponseData();
-			ResponseEntity<AccountResponseDTO> acctResponse = tripleDesEncryptService.decryptObject(encrypted);
-			assertThat(accountRequestObject()).isEqualToComparingFieldByField(acctResponse.getBody());
-		} catch (CustomCheckException e) {
-			e.printStackTrace();
-		}
+	public void testCipherObject () throws CustomCheckException {
+		AccountRequestDTO request = accountRequestObject();
+		ReflectionTestUtils.setField(tripleDesEncryptService, "secretKey", "Password123");
+		ResponseEntity<CommonResponseDTO> response = tripleDesEncryptService.encrypt(request);
+		ResponseEntity<AccountResponseDTO> acctResponse = tripleDesEncryptService.decryptObject(response.getBody().getResponseData());
+		assertThat(accountRequestObject()).isEqualToComparingFieldByField(acctResponse.getBody());
 	}
 	
 	@Test
-	public void testCipherString () {
-		try {
-			ReflectionTestUtils.setField(tripleDesEncryptService, "secretKey", "Password123");
-			ResponseEntity<CommonResponseDTO> response = tripleDesEncryptService.encrypt(stringRequest().getData());
-			String encrypted = response.getBody().getResponseData();
-			ResponseEntity<CommonResponseDTO> decryptResponse= tripleDesEncryptService.decrypt(encrypted);
-			assertEquals(stringRequest().getData(), decryptResponse.getBody().getResponseData());
-		} catch (CustomCheckException e) {
-			e.printStackTrace();
-		}
+	public void testCipherString () throws CustomCheckException {
+		ReflectionTestUtils.setField(tripleDesEncryptService, "secretKey", "Password123");
+		ResponseEntity<CommonResponseDTO> response = tripleDesEncryptService.encrypt(stringRequest().getData());
+		ResponseEntity<CommonResponseDTO> decryptResponse= tripleDesEncryptService.decrypt(response.getBody().getResponseData());
+		assertEquals(stringRequest().getData(), decryptResponse.getBody().getResponseData());
 	}
 }
