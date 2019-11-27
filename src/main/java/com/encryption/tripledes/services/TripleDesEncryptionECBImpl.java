@@ -28,7 +28,7 @@ import com.encryption.tripledes.exceptions.CustomCheckException;
 import com.encryption.tripledes.utils.APIStatus;
 
 @Service
-public class TripleDesEncryptionPkcs5Impl implements TripleDesEncryptionPkcs5Service{
+public class TripleDesEncryptionECBImpl implements TripleDesEncryptionECBService{
 	
 	@Value("${des.key}")
 	private String secretKey;
@@ -37,11 +37,10 @@ public class TripleDesEncryptionPkcs5Impl implements TripleDesEncryptionPkcs5Ser
     private byte[] mdKey;
     private byte[] keyBytes;
     private SecretKey key;
-    private IvParameterSpec iv;
     private Cipher cipher;
     
     private static final String BYTE_FORMAT = "utf-8";
-    private static final Logger logger = LogManager.getLogger(TripleDesEncryptionPkcs5Impl.class.getName());
+    private static final Logger logger = LogManager.getLogger(TripleDesEncryptionECBImpl.class.getName());
 	
 	public void initiateValues () throws Exception{
 		 md = MessageDigest.getInstance("md5");
@@ -55,8 +54,7 @@ public class TripleDesEncryptionPkcs5Impl implements TripleDesEncryptionPkcs5Ser
 		 }
 		 
 		 key = new SecretKeySpec(keyBytes, "DESede");
-		 iv = new IvParameterSpec(new byte[8]);
-		 cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+		 cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
 	}
 	
 	@Override
@@ -64,7 +62,7 @@ public class TripleDesEncryptionPkcs5Impl implements TripleDesEncryptionPkcs5Ser
 		try {
 			logger.info("Request {}", data);
 			initiateValues();
-	        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+	        cipher.init(Cipher.ENCRYPT_MODE, key);
 	        byte[] dataInBytes = data.getBytes(BYTE_FORMAT);
 	        
 	        byte[] cipherText = cipher.doFinal(dataInBytes);
@@ -83,7 +81,7 @@ public class TripleDesEncryptionPkcs5Impl implements TripleDesEncryptionPkcs5Ser
 		try {
 			logger.info("Request {}", account.toString());
 			initiateValues();
-	        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+	        cipher.init(Cipher.ENCRYPT_MODE, key);
 	        
 	        byte[] subsBytes = account.toString().getBytes("utf-8");
 	        byte[] cipherText = cipher.doFinal(subsBytes);
@@ -102,7 +100,7 @@ public class TripleDesEncryptionPkcs5Impl implements TripleDesEncryptionPkcs5Ser
 		try {
 			logger.info("Request {}", encrypted);
 			initiateValues();
-	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
+	        cipher.init(Cipher.DECRYPT_MODE, key);
 	        
 	        byte[] encData = Base64.getMimeDecoder().decode(encrypted);
 	        byte[] byteText = cipher.doFinal(encData);
@@ -121,7 +119,7 @@ public class TripleDesEncryptionPkcs5Impl implements TripleDesEncryptionPkcs5Ser
 		try {
 			logger.info("Request {}", encrypted);
 			initiateValues();
-	        cipher.init(Cipher.DECRYPT_MODE, key, iv);
+	        cipher.init(Cipher.DECRYPT_MODE, key);
 	        
 	        byte[] encData = Base64.getMimeDecoder().decode(encrypted);
 	        byte[] byteText = cipher.doFinal(encData);

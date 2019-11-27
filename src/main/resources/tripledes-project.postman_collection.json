@@ -24,7 +24,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"key\" : \"X+zn2EUQCJInBuPpmJYfGA==\",\n\t\"telco\":\t\"SMART\",\t\n\t\"acctNo\":\t\"09281234567\",\t\n\t\"externalTag\":\t\"W15\",\t\n\t\"amount\":\t15000,\t\n\t\"clientTraceNo\": \"PartnerTest1\"\t\n}",
+					"raw": "{\n\t\"key\" : \"93cCjV+cH/+6p0Gy8y9XjQ==\",\n\t\"telco\":\t\"SMART\",\t\n\t\"acctNo\":\t\"09281234567\",\t\n\t\"externalTag\":\t\"W15\",\t\n\t\"amount\":\t15000,\t\n\t\"clientTraceNo\": \"PartnerTest1\"\t\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -32,7 +32,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/cipher/pkcs5Padding/harden",
+					"raw": "http://localhost:8080/cipher/cbc/harden",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -40,7 +40,7 @@
 					"port": "8080",
 					"path": [
 						"cipher",
-						"pkcs5Padding",
+						"cbc",
 						"harden"
 					]
 				}
@@ -66,7 +66,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"data\" : \"EjecIRZRKcu7rLZa0TQw4O0oKSFA4bCAJ6N9kptBFR51xJkB55MIRrFAOq0i0mN21wVi0VGojtOi\\r\\nPUAK466KPa0r/ygpLom2H0FRJv5Rr0bkBaUE7oIIFGs91NaCN5VcQEhM7X756FRdmKh8F2gmFgid\\r\\niWI4a1Z1OnpagQWJID8=\"\n}",
+					"raw": "{\n\t\"data\" : \"4QLdJREwq6A404Kw9PFNSoYJdM1qcG8OyKYr/xYUkGxHhH/yo3hFPkjxmP3S7B8nFM701CXUqb46\\r\\nCbkidQAz5ZZvCQHMmx9bwFwGhZPB8hhGF5S8nTXPNLKsbfnny+ictI5VhKXp/flti9j0NxNqTk/9\\r\\nguEbNCOZjL9nKSR+oBM=\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -74,7 +74,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/cipher/pkcs5Padding/soften",
+					"raw": "http://localhost:8080/cipher/cbc/soften",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -82,7 +82,7 @@
 					"port": "8080",
 					"path": [
 						"cipher",
-						"pkcs5Padding",
+						"cbc",
 						"soften"
 					]
 				}
@@ -116,7 +116,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/cipher/pkcs5Padding/harden/value",
+					"raw": "http://localhost:8080/cipher/cbc/harden/value",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -124,7 +124,7 @@
 					"port": "8080",
 					"path": [
 						"cipher",
-						"pkcs5Padding",
+						"cbc",
 						"harden",
 						"value"
 					]
@@ -151,7 +151,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"data\" : \"X+zn2EUQCJInBuPpmJYfGA==\"\n}",
+					"raw": "{\n\t\"data\" : \"93cCjV+cH/+6p0Gy8y9XjQ==\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -159,7 +159,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/cipher/pkcs5Padding/soften/value",
+					"raw": "http://localhost:8080/cipher/cbc/soften/value",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -167,7 +167,7 @@
 					"port": "8080",
 					"path": [
 						"cipher",
-						"pkcs5Padding",
+						"cbc",
 						"soften",
 						"value"
 					]
