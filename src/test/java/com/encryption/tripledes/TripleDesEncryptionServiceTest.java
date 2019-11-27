@@ -16,13 +16,13 @@ import com.encryption.tripledes.dto.requests.CommonRequestDTO;
 import com.encryption.tripledes.dto.responses.AccountResponseDTO;
 import com.encryption.tripledes.dto.responses.CommonResponseDTO;
 import com.encryption.tripledes.exceptions.CustomCheckException;
-import com.encryption.tripledes.services.TripleDesEncryptionPkcs5Impl;
-import com.encryption.tripledes.services.TripleDesEncryptionPkcs5Service;
+import com.encryption.tripledes.services.TripleDesEncryptionCBCImpl;
+import com.encryption.tripledes.services.TripleDesEncryptionCBCService;
 
 @RunWith(SpringRunner.class)
 public class TripleDesEncryptionServiceTest {	
 	@Autowired
-	private TripleDesEncryptionPkcs5Service tripleDesEncryptService = new TripleDesEncryptionPkcs5Impl();
+	private TripleDesEncryptionCBCService tripleDesEncryptService = new TripleDesEncryptionCBCImpl();
 	
 	@Before
 	public AccountRequestDTO accountRequestObject () {
