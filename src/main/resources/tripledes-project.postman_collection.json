@@ -24,7 +24,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"acctNo\" : \"123123123\",\n\t\"externalTag\" : \"tag-12334234\",\n\t\"amount\" : 2000.00,\n\t\"telco\" : \"globe\",\n\t\"clientTraceNo\" : \"2242342342342\"\n}",
+					"raw": "{\n\t\"key\" : \"X+zn2EUQCJInBuPpmJYfGA==\",\n\t\"telco\":\t\"SMART\",\t\n\t\"acctNo\":\t\"09281234567\",\t\n\t\"externalTag\":\t\"W15\",\t\n\t\"amount\":\t15000,\t\n\t\"clientTraceNo\": \"PartnerTest1\"\t\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -32,14 +32,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/encryption/harden",
+					"raw": "http://localhost:8080/cipher/pkcs5Padding/harden",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"encryption",
+						"cipher",
+						"pkcs5Padding",
 						"harden"
 					]
 				}
@@ -65,7 +66,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"data\" : \"6nlPo+/M4zJ5bMaAZQcR9GV4iemL7W/RF/thnqQTfikPyfAenf/480zOsr+Bo8EYBuTo+r733QfC2K4qSMsy9VgrvPYdBvt6tujo9mE6mtL05OyAfmjT7bQ0hqfy3GCsZz83wHASNt4YKjDPJkPfo3C5HBJkEFXu\"\n}",
+					"raw": "{\n\t\"data\" : \"EjecIRZRKcu7rLZa0TQw4O0oKSFA4bCAJ6N9kptBFR51xJkB55MIRrFAOq0i0mN21wVi0VGojtOi\\r\\nPUAK466KPa0r/ygpLom2H0FRJv5Rr0bkBaUE7oIIFGs91NaCN5VcQEhM7X756FRdmKh8F2gmFgid\\r\\niWI4a1Z1OnpagQWJID8=\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -73,14 +74,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/encryption/soften",
+					"raw": "http://localhost:8080/cipher/pkcs5Padding/soften",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"encryption",
+						"cipher",
+						"pkcs5Padding",
 						"soften"
 					]
 				}
@@ -106,7 +108,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"data\" : \"34234234234234easfsff 123324234sdfsdf\"\n}\n",
+					"raw": "{\n\t\"data\" : \"password\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -114,14 +116,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/encryption/harden/value",
+					"raw": "http://localhost:8080/cipher/pkcs5Padding/harden/value",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"encryption",
+						"cipher",
+						"pkcs5Padding",
 						"harden",
 						"value"
 					]
@@ -148,7 +151,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"data\" : \"8ucVW9+Mf59OlGbDoco0M1Ja/sV4U+6PLW11KLKlRlBWGUui8HvvPw==\"\n}",
+					"raw": "{\n\t\"data\" : \"X+zn2EUQCJInBuPpmJYfGA==\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -156,14 +159,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/encryption/soften/value",
+					"raw": "http://localhost:8080/cipher/pkcs5Padding/soften/value",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"encryption",
+						"cipher",
+						"pkcs5Padding",
 						"soften",
 						"value"
 					]

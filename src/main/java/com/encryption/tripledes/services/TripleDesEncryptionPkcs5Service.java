@@ -7,7 +7,7 @@ import com.encryption.tripledes.dto.responses.AccountResponseDTO;
 import com.encryption.tripledes.dto.responses.CommonResponseDTO;
 import com.encryption.tripledes.exceptions.CustomCheckException;
 
-public interface TripleDesEncryptionService {
+public interface TripleDesEncryptionPkcs5Service {
 	
 	public ResponseEntity<CommonResponseDTO> encrypt(AccountRequestDTO account) throws CustomCheckException;
 	

@@ -15,41 +15,41 @@ import com.encryption.tripledes.dto.requests.CommonRequestDTO;
 import com.encryption.tripledes.dto.responses.AccountResponseDTO;
 import com.encryption.tripledes.dto.responses.CommonResponseDTO;
 import com.encryption.tripledes.exceptions.CustomCheckException;
-import com.encryption.tripledes.services.TripleDesEncryptionService;
+import com.encryption.tripledes.services.TripleDesEncryptionPkcs5Service;
 import com.encryption.tripledes.utils.UtilityService;
 
 @RestController
-@RequestMapping("/encryption")
-public class CipherController extends UtilityService {
+@RequestMapping("/cipher/pkcs5Padding")
+public class CipherPkcs5Controller extends UtilityService {
 	
 	@Autowired
-	private TripleDesEncryptionService tripleDes;
+	private TripleDesEncryptionPkcs5Service tripleDesPkcs5;
 	
 	@PostMapping("/harden")
 	public ResponseEntity<CommonResponseDTO> encryptObject ( @RequestHeader(name="X-Header", required = true) String header,
 			@RequestBody @Valid AccountRequestDTO account) throws CustomCheckException {
 		verifyHeader(header);
-		return tripleDes.encrypt(account);
+		return tripleDesPkcs5.encrypt(account);
 	}
 	
 	@PostMapping("/soften")
 	public ResponseEntity<AccountResponseDTO> decryptObject (@RequestHeader(name="X-Header", required = true) String header, 
 			@RequestBody @Valid CommonRequestDTO encrypted) throws CustomCheckException {
 		verifyHeader(header);
-		return tripleDes.decryptObject(encrypted.getData());
+		return tripleDesPkcs5.decryptObject(encrypted.getData());
 	}
 	
 	@PostMapping("/harden/value")
 	public ResponseEntity<CommonResponseDTO> encryptValue (@RequestHeader(name="X-Header", required = true) String header,
 			@RequestBody @Valid CommonRequestDTO key) throws CustomCheckException {
 		verifyHeader(header);
-		return tripleDes.encrypt(key.getData());
+		return tripleDesPkcs5.encrypt(key.getData());
 	}
 	
 	@PostMapping("/soften/value")
 	public ResponseEntity<CommonResponseDTO> decryptValue (@RequestHeader(name="X-Header", required = true) String header,
 			@RequestBody @Valid CommonRequestDTO encrypted) throws CustomCheckException {
 		verifyHeader(header);
-		return tripleDes.decrypt(encrypted.getData());
+		return tripleDesPkcs5.decrypt(encrypted.getData());
 	}
 }

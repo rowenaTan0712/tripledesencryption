@@ -28,7 +28,7 @@ import com.encryption.tripledes.exceptions.CustomCheckException;
 import com.encryption.tripledes.utils.APIStatus;
 
 @Service
-public class TripleDesEncryptionImpl implements TripleDesEncryptionService{
+public class TripleDesEncryptionPkcs5Impl implements TripleDesEncryptionPkcs5Service{
 	
 	@Value("${des.key}")
 	private String secretKey;
@@ -41,7 +41,7 @@ public class TripleDesEncryptionImpl implements TripleDesEncryptionService{
     private Cipher cipher;
     
     private static final String BYTE_FORMAT = "utf-8";
-    private static final Logger logger = LogManager.getLogger(TripleDesEncryptionImpl.class.getName());
+    private static final Logger logger = LogManager.getLogger(TripleDesEncryptionPkcs5Impl.class.getName());
 	
 	public void initiateValues () throws Exception{
 		 md = MessageDigest.getInstance("md5");
